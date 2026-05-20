@@ -29,6 +29,16 @@ def review(fp):
     if n >= 2:
         issues.append(f"句式重复{n}次")
 
+    # Scan for "好的" as transition
+    hao_de = len(re.findall(r'。好的，', body))
+    if hao_de > 0:
+        issues.append(f"\"好的\"过渡{hao_de}处")
+
+    # Scan for "意识到"类词
+    yishi = len(re.findall(r'(意识到|发现|决定)', body))
+    if yishi > 30:
+        issues.append(f"意识类词{yishi}次(偏高)")
+
     dcjk = len(CJK.findall(diary))
     if dcjk > 0:
         has_fact = bool(re.search(r'(天|到了|找到|遇到|发现)', diary))
